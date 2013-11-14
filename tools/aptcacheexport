@@ -1,0 +1,54 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+#
+# Copyright 2013 Thomas Bechtold <thomasbechtold@jpberlin.de>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+from __future__ import print_function
+
+import argparse
+import sys
+import os
+
+try:
+    from aptexport import AptCacheExport
+except ImportError:
+    #try to install from local directory
+    sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), "../"))
+    from aptexport import AptCacheExport
+
+
+def process_args():
+    """process arguments"""
+    parser = argparse.ArgumentParser(prog='repository-software')
+    parser.add_argument('-o', '--output-file', help='output file')
+    parser.add_argument('-i', '--only-installed', action='store_true', help='output only installed packages (default: %(default)s)')
+    parser.add_argument('-p', '--pretty', action='store_true', help='pretty print for json output (default: %(default)s)')
+    return vars(parser.parse_args())
+
+
+if __name__ == '__main__':
+    """main entry point"""
+    args = process_args()
+    ace = AptCacheExport()
+    if args['output_file']:
+        #write to file
+        with open(args['output_file'], "w") as f:
+            ace.as_json(f, args['only_installed'], args['pretty'])
+    else:
+        #write to console
+        ace.as_json(sys.stdout, args['only_installed'], args['pretty'])
+
+    sys.exit(0)
