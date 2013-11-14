@@ -46,7 +46,9 @@ class AptCacheExport(object):
                     'trusted': o.trusted,
                 } for o in obj]
         #we can not handle this object type with the encoder
-        raise Exception("Can not encode '%s'. Not a 'list' object with origins" % (type(obj)))
+        raise Exception(
+            "Can not encode '%s'. Not a 'list' object with origins" %
+            (type(obj)))
 
     def _package_version_dict(self, obj):
         """convert a apt.package.Version to a dict"""
@@ -69,14 +71,18 @@ class AptCacheExport(object):
                 'description': obj.description,
             }
         #we can not handle this object type with the encoder
-        raise Exception("Can not encode '%s'. Not a 'apt.package.Version' object" % (type(obj)))
+        raise Exception(
+            "Can not encode '%s'. Not a 'apt.package.Version' object" %
+            (type(obj)))
 
     def _package_version_list_list(self, obj):
         """convert a apt.package.VersionList to a list of dicts"""
         if isinstance(obj, apt.package.VersionList):
             return [self._package_version_dict(v) for v in obj]
         #we can not handle this object type with the encoder
-        raise Exception("Can not encode '%s'. Not a 'apt.package.VersionList' object" % (type(obj)))
+        raise Exception(
+            "Can not encode '%s'. Not a 'apt.package.VersionList' object" %
+            (type(obj)))
 
     def _package_dict(self, obj):
         """convert a apt.package.Package object to a dict"""
@@ -88,13 +94,16 @@ class AptCacheExport(object):
             package['is_installed'] = obj.is_installed
             package['is_upgradable'] = obj.is_upgradable
             if obj.installed:
-                package['installed'] = self._package_version_dict(obj.installed)
+                package['installed'] = self._package_version_dict(
+                    obj.installed)
             #package['installed_files'] = obj.installed_files
             package['versions'] = self._package_version_list_list(obj.versions)
             if obj.candidate:
                 package['candiate'] = self._package_version_dict(obj.candidate)
             return package
-        raise Exception("Can not encode '%s'. Not a 'apt.package.Package' object" % (type(obj)))
+        raise Exception(
+            "Can not encode '%s'. Not a 'apt.package.Package' object" %
+            (type(obj)))
 
     def _get_packages(self, only_installed):
         """iterate over the packages"""

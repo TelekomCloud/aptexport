@@ -26,7 +26,8 @@ try:
     from aptexport import AptCacheExport
 except ImportError:
     #try to install from local directory
-    sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), "../"))
+    sys.path.append(
+        os.path.join(os.path.dirname(os.path.abspath(__file__)), "../"))
     from aptexport import AptCacheExport
 
 
@@ -34,8 +35,12 @@ def process_args():
     """process arguments"""
     parser = argparse.ArgumentParser(prog='repository-software')
     parser.add_argument('-o', '--output-file', help='output file')
-    parser.add_argument('-i', '--only-installed', action='store_true', help='output only installed packages (default: %(default)s)')
-    parser.add_argument('-p', '--pretty', action='store_true', help='pretty print for json output (default: %(default)s)')
+    parser.add_argument('-i', '--only-installed', action='store_true',
+                        help='output only installed packages" \
+                        "(default: %(default)s)')
+    parser.add_argument('-p', '--pretty', action='store_true',
+                        help='pretty print for json output" \
+                        "(default: %(default)s)')
     return vars(parser.parse_args())
 
 
