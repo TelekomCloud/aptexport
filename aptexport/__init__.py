@@ -114,8 +114,13 @@ class AptCacheExport(object):
 
     def as_json(self, out, only_installed, pretty):
         """write to a file-like object"""
-        for package in self._get_packages(only_installed=only_installed):
-            if pretty:
-                out.write(json.dumps(package, indent=2))
-            else:
-                out.write(json.dumps(package))
+        out.write('[\n')
+        if pretty:
+            out.write(",".join(map(lambda x: json.dumps(x, indent=2),
+                                   self._get_packages(
+                                       only_installed=only_installed))))
+        else:
+            out.write(",".join(map(lambda x: json.dumps(x),
+                                   self._get_packages(
+                                       only_installed=only_installed))))
+        out.write(']\n')
