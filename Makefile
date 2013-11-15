@@ -1,6 +1,11 @@
 #!/usr/bin/make
 
-all: pep8
+all: pep8 flake8
+
+FILE_LIST:=$(shell find . -path ./build -prune -o -name '*.py' -print) tools/aptcacheexport
 
 pep8:
-	/usr/bin/pep8 `find . -path ./build -prune -o -name '*.py' -print` tools/aptcacheexport
+	/usr/bin/pep8 $(FILE_LIST)
+
+flake8:
+	/usr/bin/flake8 $(FILE_LIST)
