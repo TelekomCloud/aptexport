@@ -97,6 +97,7 @@ class AptCacheExport(object):
         """convert a apt.package.Package object to a dict"""
         if isinstance(obj, apt.package.Package):
             package = dict()
+            package['fullname'] = obj.fullname
             package['name'] = obj.name
             package['shortname'] = obj.shortname
             if hasattr(obj, "has_config_files"):
