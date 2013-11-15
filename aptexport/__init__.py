@@ -35,16 +35,25 @@ class AptCacheExport(object):
     def _package_version_origins_dict(self, obj):
         """convert a list of origins to a dict"""
         if isinstance(obj, list):
-            return [
-                {
-                    'archive': o.archive,
-                    'codename': o.codename,
-                    'component': o.component,
-                    'label': o.label,
-                    'origin': o.origin,
-                    'site': o.site,
-                    'trusted': o.trusted,
-                } for o in obj]
+            l = list()
+            for o in obj:
+                d = dict()
+                if hasattr(o, 'archive'):
+                    d['archive'] = o.archive
+                if hasattr(o, 'codename'):
+                    d['codename'] = o.codename
+                if hasattr(o, 'component'):
+                    d['component'] = o.component
+                if hasattr(o, 'label'):
+                    d['label'] = o.label
+                if hasattr(o, 'origin'):
+                    d['origin'] = o.origin
+                if hasattr(o, 'site'):
+                    d['site'] = o.site
+                if hasattr(o, 'trusted'):
+                    d['trusted'] = o.trusted
+                l.append(d)
+            return l
         #we can not handle this object type with the encoder
         raise Exception(
             "Can not encode '%s'. Not a 'list' object with origins" %
