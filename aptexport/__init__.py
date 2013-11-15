@@ -90,7 +90,8 @@ class AptCacheExport(object):
             package = dict()
             package['name'] = obj.name
             package['shortname'] = obj.shortname
-            package['has_config_files'] = obj.has_config_files
+            if hasattr(obj, "has_config_files"):
+                package['has_config_files'] = obj.has_config_files
             package['is_installed'] = obj.is_installed
             package['is_upgradable'] = obj.is_upgradable
             if obj.installed:
