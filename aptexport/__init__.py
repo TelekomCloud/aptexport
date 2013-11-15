@@ -17,11 +17,8 @@
 
 from __future__ import print_function
 
-import os
-import sys
-import argparse
 import apt
-import apt_pkg
+#import apt_pkg
 import json
 
 
