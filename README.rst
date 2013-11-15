@@ -1,5 +1,8 @@
 aptexport python module
 =======================
+.. image:: https://travis-ci.org/toabctl/aptexport.png
+   :target: https://travis-ci.org/toabctl/aptexport
+
 aptexport is a python modules based on `python-apt` to collect packages and export the package list. Currently only json is supported.
 
 Installation
