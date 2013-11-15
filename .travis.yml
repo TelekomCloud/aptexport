@@ -3,6 +3,6 @@ python:
   - "2.7"
   - "3.3"
 # command to install dependencies
-install: "sudo apt-get install -qq pep8 python-apt python-flake8 python3-flake8"
+install: "sudo apt-get install -qq pep8 python-apt && pip install flake8"
 # command to run tests
 script: make
