@@ -16,7 +16,9 @@ setup(
     install_requires=[
         'python-apt',
         'setuptools',
+        'nose',
     ],
+    test_suite = 'nose.collector',
     author="Thomas Bechtold",
     author_email="thomasbechtold@jpberlin.de",
     description="export apt package catalog",
