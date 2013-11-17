@@ -57,6 +57,8 @@ deb [arch=amd64] file://%(repo_path)s codename2 component1 component2
         self.rootdir = tempfile.mkdtemp(prefix='aptexport-tests_')
         self.__setup_apt_directory_tree()
         self.ace = AptCacheExport(rootdir=self.rootdir, cache_update=True)
+        #stringIO used to write json
+        self.f = StringIO.StringIO()
 
     def tearDown(self):
         if self.rootdir:
@@ -65,16 +67,36 @@ deb [arch=amd64] file://%(repo_path)s codename2 component1 component2
             else:
                 sys.stdout.write(
                     "don't delete temp dir '%s' for safety" % (self.rootdir))
+        self.f.close()
 
     def test_export_import(self):
         """write json to file and reread the file and load into json"""
         #first dump the cache as json to file
-        f = StringIO.StringIO()
-        self.ace.as_json(f, False, True)
+        self.ace.as_json(self.f, False, True)
         #now load json output from file
-        f.seek(0)
+        self.f.seek(0)
         with open('/tmp/json-test', "w") as x:
-            x.write("".join(f.readlines()))
-        f.seek(0)
-        json.loads("".join(f.readlines()))
-        f.close()
+            x.write("".join(self.f.readlines()))
+        self.f.seek(0)
+        json.loads("".join(self.f.readlines()))
+
+    def test_only_installed_packages(self):
+        """test expects that the testpackages
+        'aptexport-unittest-dummy1-bin1' and
+        'aptexport-unittest-dummy1-bin2' are not installed"""
+        #check only installed packages
+        self.ace.as_json(self.f, True, True)
+        self.f.seek(0)
+        jsondata = json.loads("".join(self.f.readlines()))
+        #expect 0 packages installed!
+        self.assertEqual(len(jsondata), 0)
+
+    def test_all_packages(self):
+        """test if packages from repositories are listed"""
+        #check all packages (not only installed)
+        self.ace.as_json(self.f, False, True)
+        self.f.seek(0)
+        jsondata = json.loads("".join(self.f.readlines()))
+        #expect 2 packages available
+        self.assertEqual(len(jsondata), 2,
+                         "2 packages expected in the test repository")
