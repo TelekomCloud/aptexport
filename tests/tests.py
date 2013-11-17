@@ -97,3 +97,46 @@ deb [arch=amd64] file://%(repo_path)s codename2 component1 component2
         #expect 2 packages available
         self.assertEqual(len(jsondata), 2,
                          "2 packages expected in the test repository")
+
+    def test_aptexport_dummy_package(self):
+        """test a single package and the available fields"""
+        #check all packages (not only installed)
+        self.ace.as_json(self.f, False, True)
+        self.f.seek(0)
+        jsondata = json.loads("\n".join(self.f.readlines()))
+        #first package should be 'aptexport-unittest-dummy1-bin1:amd64'
+        p = jsondata[0]
+        self.assertEqual(p['fullname'], 'aptexport-unittest-dummy1-bin1:amd64')
+        self.assertEqual(p['name'], 'aptexport-unittest-dummy1-bin1')
+        self.assertEqual(p['is_installed'], False)
+        self.assertEqual(p['is_upgradable'], False)
+        self.assertEqual(p['has_config_files'], False)
+        #expected 2 versions for this package
+        self.assertEqual(len(p['versions']), 2)
+        self.assertEqual(p['versions'][0]['version'], '0.2-1')
+        self.assertEqual(p['versions'][1]['version'], '0.1-1')
+        #check some fields of one of the versions
+        self.assertTrue(p['versions'][0]['size'] > 0)
+        self.assertTrue(p['versions'][0]['installed_size'] > 0)
+        self.assertEqual(p['versions'][0]['section'], "misc")
+        self.assertEqual(p['versions'][0]['architecture'], "amd64")
+        self.assertEqual(p['versions'][0]['source_version'], "0.2-1")
+        self.assertEqual(p['versions'][0]['source_name'],
+                         "aptexport-unittest-dummy1")
+        self.assertIsNot(p['versions'][0]['uri'], None or "")
+        self.assertIsNot(p['versions'][0]['sha256'], None or "")
+        self.assertIsNot(p['versions'][0]['summary'], None or "")
+        self.assertIsNot(p['versions'][0]['description'], None or "")
+        #now check some fields which are defined in the repositories
+        #conf/distribution file handled by reprepro and are available in the
+        #origins list
+        #expect 1 origin for the package version
+        self.assertTrue(len(p['versions'][0]['origins']), 1)
+        origin_1 = p['versions'][0]['origins'][0]
+        self.assertEqual(origin_1['origin'], "origin2")
+        self.assertEqual(origin_1['label'], "label2")
+        self.assertEqual(origin_1['codename'], "codename2")
+        self.assertEqual(origin_1['component'], "component1")
+        #expect a candidate because currently there's no package installed
+        self.assertIsNotNone(p['candidate'])
+        self.assertEqual(p['candidate']['version'], '0.2-1')
