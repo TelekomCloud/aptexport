@@ -110,7 +110,9 @@ deb [arch=amd64] file://%(repo_path)s codename2 component1 component2
         self.assertEqual(p['name'], 'aptexport-unittest-dummy1-bin1')
         self.assertEqual(p['is_installed'], False)
         self.assertEqual(p['is_upgradable'], False)
-        self.assertEqual(p['has_config_files'], False)
+        #not all versions of python-apt have this key
+        if hasattr(p, "has_config_files"):
+            self.assertEqual(p['has_config_files'], False)
         #expected 2 versions for this package
         self.assertEqual(len(p['versions']), 2)
         self.assertEqual(p['versions'][0]['version'], '0.2-1')
