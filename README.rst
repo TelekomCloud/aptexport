@@ -14,3 +14,13 @@ Usage
 There's a command line tool called `aptcacheexport`. To see a installed packages in json format, do::
 
   ./aptcacheexport --only-installed --pretty
+
+Tests
+=====
+To execute the whole testsuite (including pep8 and flake8), do::
+
+  make
+
+To run a single testcase (in this example case `test_aptexport_dummy_package` from class `JsonExportTests`) with nose, do::
+
+  nosetests -s tests/tests.py:JsonExportTests.test_aptexport_dummy_package
