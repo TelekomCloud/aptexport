@@ -24,9 +24,9 @@ import json
 
 class AptCacheExport(object):
     """handle the availalbe/installed software packages"""
-    def __init__(self, cache_update=False):
+    def __init__(self, rootdir="/", cache_update=False):
         self.__cache_update = cache_update
-        self.__cache = apt.Cache(rootdir="/", memonly=False)
+        self.__cache = apt.Cache(rootdir=rootdir, memonly=False)
         #update the apt-cache before using it? Need to be root todo this
         if self.__cache_update:
             self.cache.update()
