@@ -75,9 +75,6 @@ deb [arch=amd64] file://%(repo_path)s codename2 component1 component2
         self.ace.as_json(self.f, False, True)
         #now load json output from file
         self.f.seek(0)
-        with open('/tmp/json-test', "w") as x:
-            x.write("".join(self.f.readlines()))
-        self.f.seek(0)
         json.loads("".join(self.f.readlines()))
 
     def test_only_installed_packages(self):
