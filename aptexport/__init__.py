@@ -29,7 +29,7 @@ class AptCacheExport(object):
         self.__cache = apt.Cache(rootdir=rootdir, memonly=False)
         #update the apt-cache before using it? Need to be root todo this
         if self.__cache_update:
-            self.cache.update()
+            self.__cache.update()
         self.__cache.open()
 
     def _package_version_origins_dict(self, obj):
