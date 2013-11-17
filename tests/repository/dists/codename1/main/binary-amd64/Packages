@@ -1,0 +1,38 @@
+Package: aptexport-unittest-dummy1-bin1
+Source: aptexport-unittest-dummy1
+Version: 0.1-1
+Architecture: amd64
+Maintainer: Thomas Bechtold <thomasbechtold@jpberlin.de>
+Installed-Size: 26
+Homepage: https://github.com/toabctl/aptexport
+Priority: optional
+Section: misc
+Filename: pool/main/a/aptexport-unittest-dummy1/aptexport-unittest-dummy1-bin1_0.1-1_amd64.deb
+Size: 1868
+SHA256: 480e3560c4d0132fcc04d96c138c0c8983e5555e180f9884dec890fe7812585f
+SHA1: a2e3ed2bdacc4aaecf600ab72f17b34fada2f09a
+MD5sum: 195a92dce144b331a9a50c7dd09ef7f3
+Description: Dummy package to test aptexport
+ This is a dummy package used for unittests for aptexport.
+ .
+ Great thing!
+
+Package: aptexport-unittest-dummy1-bin2
+Source: aptexport-unittest-dummy1
+Version: 0.1-1
+Architecture: all
+Maintainer: Thomas Bechtold <thomasbechtold@jpberlin.de>
+Installed-Size: 26
+Homepage: https://github.com/toabctl/aptexport
+Priority: optional
+Section: misc
+Filename: pool/main/a/aptexport-unittest-dummy1/aptexport-unittest-dummy1-bin2_0.1-1_all.deb
+Size: 1872
+SHA256: a3f14df32b0da7bcd359902cf5760fffdafe6cfb24441839f168c211a07573ad
+SHA1: 2a3d0a6d91a9e531990a90181da4397f8df0518f
+MD5sum: 72af24b8b8c1dd9e8e7430fa9f129e92
+Description: Dummy package to test aptexport
+ This is a dummy package used for unittests for aptexport.
+ .
+ This contains the foo stuff.
+

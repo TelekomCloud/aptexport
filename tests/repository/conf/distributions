@@ -1,0 +1,13 @@
+Origin: origin1
+Label: label1
+Codename: codename1
+Architectures: amd64 source
+Components: main non-free contrib
+Description: Repository description 1
+
+Origin: origin2
+Label: label2
+Codename: codename2
+Architectures: amd64 source
+Components: component1 component2
+Description: Repository description 2

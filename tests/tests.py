@@ -28,15 +28,49 @@ from aptexport import AptCacheExport
 import unittest
 import json
 import StringIO
+import tempfile
+import shutil
 
 
 class JsonExportTests(unittest.TestCase):
-    def test_json_export(self):
+    def __setup_apt_directory_tree(self):
+        """setup directory structure for apt"""
+        os.makedirs(os.path.abspath(self.rootdir + "/etc/apt"))
+        #create sources.list
+        repository_path = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)), "repository")
+        with open(os.path.abspath(self.rootdir + "/etc/apt/sources.list"),
+                  "w") as s:
+            s.write("""
+deb [arch=amd64] file://%(repo_path)s codename1 main
+deb [arch=amd64] file://%(repo_path)s codename2 component1 component2
+#deb-src file://%(repo_path)s codename1 main component1 component2
+#deb-src file://%(repo_path)s codename2
+            """ % {'repo_path': repository_path})
+        #create empty apt.conf
+        os.makedirs(os.path.abspath(self.rootdir + "/etc/apt/apt.conf.d"))
+        with open(os.path.abspath(self.rootdir + "/etc/apt/apt.conf"),
+                  "w") as s:
+            s.write("")
+
+    def setUp(self):
+        self.rootdir = tempfile.mkdtemp(prefix='aptexport-tests_')
+        self.__setup_apt_directory_tree()
+        self.ace = AptCacheExport(rootdir=self.rootdir, cache_update=True)
+
+    def tearDown(self):
+        if self.rootdir:
+            if self.rootdir.startswith("/tmp"):
+                shutil.rmtree(self.rootdir)
+            else:
+                sys.stdout.write(
+                    "don't delete temp dir '%s' for safety" % (self.rootdir))
+
+    def test_export_import(self):
         """write json to file and reread the file and load into json"""
         #first dump the cache as json to file
-        ace = AptCacheExport()
         f = StringIO.StringIO()
-        ace.as_json(f, True, True)
+        self.ace.as_json(f, False, True)
         #now load json output from file
         f.seek(0)
         with open('/tmp/json-test', "w") as x:
@@ -44,4 +78,3 @@ class JsonExportTests(unittest.TestCase):
         f.seek(0)
         json.loads("".join(f.readlines()))
         f.close()
-        return

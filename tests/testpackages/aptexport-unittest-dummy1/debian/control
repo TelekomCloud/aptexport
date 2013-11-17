@@ -1,0 +1,23 @@
+Source: aptexport-unittest-dummy1
+Section: misc
+Priority: optional
+Maintainer: Thomas Bechtold <thomasbechtold@jpberlin.de>
+Build-Depends: debhelper (>= 8.0.0)
+Standards-Version: 3.9.4
+Homepage: https://github.com/toabctl/aptexport
+
+Package: aptexport-unittest-dummy1-bin1
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Dummy package to test aptexport
+ This is a dummy package used for unittests for aptexport.
+ .
+ Great thing!
+
+Package: aptexport-unittest-dummy1-bin2
+Architecture: all
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Dummy package to test aptexport
+ This is a dummy package used for unittests for aptexport.
+ .
+ This contains the foo stuff.

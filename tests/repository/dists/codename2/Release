@@ -1,0 +1,46 @@
+Origin: origin2
+Label: label2
+Codename: codename2
+Date: Sun, 17 Nov 2013 11:09:56 UTC
+Architectures: amd64
+Components: component1 component2
+Description: Repository description 2
+MD5Sum:
+ 90026214d9e40ded029a4302065d6324 1332 component1/binary-amd64/Packages
+ 590b79527f111226d63c6647863655a0 563 component1/binary-amd64/Packages.gz
+ ab7df0ee913d9d5529b276ab90b30c1d 110 component1/binary-amd64/Release
+ 73e84f6b32980b8ff1d83427b75a9acf 1418 component1/source/Sources
+ ac1305e11cd4a31c28c1b72be56acdbb 651 component1/source/Sources.gz
+ edf53a054dbb6d20f4c0f5d8796f5d79 111 component1/source/Release
+ d41d8cd98f00b204e9800998ecf8427e 0 component2/binary-amd64/Packages
+ 7029066c27ac6f5ef18d660d5741979a 20 component2/binary-amd64/Packages.gz
+ 45d16250ff373ff7a5ecdd7d4718d43b 110 component2/binary-amd64/Release
+ d41d8cd98f00b204e9800998ecf8427e 0 component2/source/Sources
+ 7029066c27ac6f5ef18d660d5741979a 20 component2/source/Sources.gz
+ 742d9fbab8bc6b0998379b4b33e0328c 111 component2/source/Release
+SHA1:
+ 4badd75429dff629fcc4bbfeaa05e224a3e12cdf 1332 component1/binary-amd64/Packages
+ c6bdf7bb05fd7095694f18ed30ed2b841119d54f 563 component1/binary-amd64/Packages.gz
+ 66f21d74c6041a68b08658639e94696478182c0b 110 component1/binary-amd64/Release
+ f57a8a376d7b37f226bba50c9951410fa6f289a9 1418 component1/source/Sources
+ 4f4cbbd313e2134d60a8945802602b4023bc6464 651 component1/source/Sources.gz
+ b18c3f795622e085228ad75d272a19f32401cdce 111 component1/source/Release
+ da39a3ee5e6b4b0d3255bfef95601890afd80709 0 component2/binary-amd64/Packages
+ 46c6643f07aa7f6bfe7118de926b86defc5087c4 20 component2/binary-amd64/Packages.gz
+ ac24410b9754d3adbf2a75ba2d9a1a219e391cd8 110 component2/binary-amd64/Release
+ da39a3ee5e6b4b0d3255bfef95601890afd80709 0 component2/source/Sources
+ 46c6643f07aa7f6bfe7118de926b86defc5087c4 20 component2/source/Sources.gz
+ d5fe752aa46d15358674ddc182a6be80d7f0bcf1 111 component2/source/Release
+SHA256:
+ ddca646a74ee4f575998e2b89bf228841c24f49fa5743651c620b2bf8ed66440 1332 component1/binary-amd64/Packages
+ 959899af6c1e5d97d6edcf042da2ed4cabab91126179d1498f00d9690ed0b614 563 component1/binary-amd64/Packages.gz
+ 6b7e579ccfe94e01492d88b59eb9fba2904ef6ce9cfc704f4403255257cf44ed 110 component1/binary-amd64/Release
+ 0f41ddabe7f9ce83f753dfd0762acbad592ee698f288602c049d56c8791684c6 1418 component1/source/Sources
+ a59155525f9be677aaff199da26a0166f724bb44ed8cec8ba85e7f0549f59499 651 component1/source/Sources.gz
+ 276273918c3c26bbd028a7757e98cc805c070a0780fe32a827c16aa067b8740e 111 component1/source/Release
+ e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 0 component2/binary-amd64/Packages
+ 59869db34853933b239f1e2219cf7d431da006aa919635478511fabbfc8849d2 20 component2/binary-amd64/Packages.gz
+ 29fdcfcc996c14b580b166290b0a233f248df0410168c37de618fdc381489be7 110 component2/binary-amd64/Release
+ e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 0 component2/source/Sources
+ 59869db34853933b239f1e2219cf7d431da006aa919635478511fabbfc8849d2 20 component2/source/Sources.gz
+ b2cb668edd9b946ce7bb673c5aa44f560955fec7f167ab1abca351bcde72c295 111 component2/source/Release

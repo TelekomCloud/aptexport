@@ -1,0 +1,64 @@
+Origin: origin1
+Label: label1
+Codename: codename1
+Date: Sun, 17 Nov 2013 11:09:48 UTC
+Architectures: amd64
+Components: main non-free contrib
+Description: Repository description 1
+MD5Sum:
+ 0499fa8facaa9acb99e271fa6a58d791 1320 main/binary-amd64/Packages
+ 00ea51f4daaf423546c9fb404da79b5b 559 main/binary-amd64/Packages.gz
+ c5098bdcb67c41337dc9f460acd4a1e5 104 main/binary-amd64/Release
+ 55a28dbcba2d871d166feb451432e779 1412 main/source/Sources
+ 3679f7328c6db16ad3319be6122461b6 646 main/source/Sources.gz
+ c7802eda6cd164fddb135a9974c26c48 105 main/source/Release
+ d41d8cd98f00b204e9800998ecf8427e 0 non-free/binary-amd64/Packages
+ 7029066c27ac6f5ef18d660d5741979a 20 non-free/binary-amd64/Packages.gz
+ 3868f37a11c641093e6d805735384c7f 108 non-free/binary-amd64/Release
+ d41d8cd98f00b204e9800998ecf8427e 0 non-free/source/Sources
+ 7029066c27ac6f5ef18d660d5741979a 20 non-free/source/Sources.gz
+ 77694ab758b6b123f5a4178d6be78242 109 non-free/source/Release
+ d41d8cd98f00b204e9800998ecf8427e 0 contrib/binary-amd64/Packages
+ 7029066c27ac6f5ef18d660d5741979a 20 contrib/binary-amd64/Packages.gz
+ b793fd4ef8dacde8fafe45a1ff3c2164 107 contrib/binary-amd64/Release
+ d41d8cd98f00b204e9800998ecf8427e 0 contrib/source/Sources
+ 7029066c27ac6f5ef18d660d5741979a 20 contrib/source/Sources.gz
+ c2236fc0e76dbb38c869c33668f3d9c9 108 contrib/source/Release
+SHA1:
+ 047e3cc145131051248cf92ce56fbcf965d35233 1320 main/binary-amd64/Packages
+ 0be07782f9774c3c2b2e0d5c375d864fff80d518 559 main/binary-amd64/Packages.gz
+ 0193e3941d1d26b991ede7b15a3b35e15c565515 104 main/binary-amd64/Release
+ 61daa5dab1a78ae4c0e1389cac708121a641b63b 1412 main/source/Sources
+ a4c97a12f7fe99374869e8dff2fba14c0ecd7897 646 main/source/Sources.gz
+ 49a7656e694b5d0bc84acb7180dac24623b6c35b 105 main/source/Release
+ da39a3ee5e6b4b0d3255bfef95601890afd80709 0 non-free/binary-amd64/Packages
+ 46c6643f07aa7f6bfe7118de926b86defc5087c4 20 non-free/binary-amd64/Packages.gz
+ 1b03314802ab6052ad1a763bad9e177e24a41190 108 non-free/binary-amd64/Release
+ da39a3ee5e6b4b0d3255bfef95601890afd80709 0 non-free/source/Sources
+ 46c6643f07aa7f6bfe7118de926b86defc5087c4 20 non-free/source/Sources.gz
+ c328c5b7a6142d02c13eb042349de27021aec9a2 109 non-free/source/Release
+ da39a3ee5e6b4b0d3255bfef95601890afd80709 0 contrib/binary-amd64/Packages
+ 46c6643f07aa7f6bfe7118de926b86defc5087c4 20 contrib/binary-amd64/Packages.gz
+ 33d65b5c0d320617227d442abb92c84b252d6c49 107 contrib/binary-amd64/Release
+ da39a3ee5e6b4b0d3255bfef95601890afd80709 0 contrib/source/Sources
+ 46c6643f07aa7f6bfe7118de926b86defc5087c4 20 contrib/source/Sources.gz
+ 5bf40b21bc691f92ccf7f4d88b752c9720d8e7ae 108 contrib/source/Release
+SHA256:
+ 6e65b583ea02bc19350c9daeeca97af6a06fd62fca1a9ad8205c8a1347fee363 1320 main/binary-amd64/Packages
+ 4dd868d6790402bc311d19ba91896e6575f5f3e0f692178bf1e53e10dc7142d8 559 main/binary-amd64/Packages.gz
+ f210a53116fd6627d9e8975f1ef2fc2033b35456eb16e4c42e8cc72127e8c5c1 104 main/binary-amd64/Release
+ de75d25b9b64f31f1f6367b646108b1444fd70a5d145cc8338c12f4f78ebf9f4 1412 main/source/Sources
+ 6ef9c42f8a9c2354a5b520a6a8fa9958d3ae7dbd5f75ff1fc21e41f5198d17d0 646 main/source/Sources.gz
+ b5f7d0a120a806e25782371156df9363ead0f9c8051b777e928a96a9e3aa059e 105 main/source/Release
+ e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 0 non-free/binary-amd64/Packages
+ 59869db34853933b239f1e2219cf7d431da006aa919635478511fabbfc8849d2 20 non-free/binary-amd64/Packages.gz
+ 3f0c61dd2eca69c476c7b0b4e1fa0f854439c6c4616dbe4455d8158b08073d23 108 non-free/binary-amd64/Release
+ e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 0 non-free/source/Sources
+ 59869db34853933b239f1e2219cf7d431da006aa919635478511fabbfc8849d2 20 non-free/source/Sources.gz
+ 62a2a8595c7afae06d08f4f941e91bdafa5662a31ec706629ed84707291e32e3 109 non-free/source/Release
+ e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 0 contrib/binary-amd64/Packages
+ 59869db34853933b239f1e2219cf7d431da006aa919635478511fabbfc8849d2 20 contrib/binary-amd64/Packages.gz
+ 2eff3c75b3867f6bd37cc27ebf1b3d78dd8894a92f3ce29394ea646df43f4b9e 107 contrib/binary-amd64/Release
+ e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 0 contrib/source/Sources
+ 59869db34853933b239f1e2219cf7d431da006aa919635478511fabbfc8849d2 20 contrib/source/Sources.gz
+ f4eb3a6d31a210289eafcab648f3ad623e2777ceb904511ebeb9ce56a32107aa 108 contrib/source/Release
