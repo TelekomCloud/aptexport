@@ -110,7 +110,7 @@ class AptCacheExport(object):
             #package['installed_files'] = obj.installed_files
             package['versions'] = self._package_version_list_list(obj.versions)
             if obj.candidate:
-                package['candiate'] = self._package_version_dict(obj.candidate)
+                package['candidate'] = self._package_version_dict(obj.candidate)
             return package
         raise Exception(
             "Can not encode '%s'. Not a 'apt.package.Package' object" %
