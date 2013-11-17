@@ -28,7 +28,7 @@ class AptCacheExport(object):
         self.__cache_update = cache_update
         self.__cache = apt.Cache(rootdir=rootdir, memonly=False)
         #update the apt-cache before using it? Need to be root todo this
-        if self.__cache_update:
+        if cache_update:
             self.__cache.update()
         self.__cache.open()
 
