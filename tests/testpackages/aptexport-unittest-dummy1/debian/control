@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: Thomas Bechtold <thomasbechtold@jpberlin.de>
 Build-Depends: debhelper (>= 8.0.0)
 Standards-Version: 3.9.4
-Homepage: https://github.com/toabctl/aptexport
+Homepage: https://github.com/TelekomCloud/aptexport
 
 Package: aptexport-unittest-dummy1-bin1
 Architecture: any

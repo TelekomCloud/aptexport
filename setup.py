@@ -40,7 +40,7 @@ setup(
     long_description=long_desc,
     license="Apache-2.0",
     keywords="apt dpkg debian ubuntu",
-    url="https://github.com/toabctl/aptexport",
+    url="https://github.com/TelekomCloud/aptexport",
 
     classifiers=[
         "Development Status :: 4 - Beta",

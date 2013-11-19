@@ -1,6 +1,6 @@
 Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: aptexport-unittest-dummy1
-Source: https://github.com/toabctl/aptexport
+Source: https://github.com/TelekomCloud/aptexport
 
 Files: *
 Copyright: 2013 Thomas Bechtold <thomasbechtold@jpberlin.de>
