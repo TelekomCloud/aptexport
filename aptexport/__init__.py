@@ -36,30 +36,32 @@ class AptCacheExport(object):
         if isinstance(obj, list):
             l = list()
             for o in obj:
-                d = dict()
-                if hasattr(o, 'archive'):
-                    d['archive'] = o.archive
-                if hasattr(o, 'codename'):
-                    d['codename'] = o.codename
-                if hasattr(o, 'component'):
-                    d['component'] = o.component
-                if hasattr(o, 'label'):
-                    d['label'] = o.label
-                if hasattr(o, 'origin'):
-                    d['origin'] = o.origin
-                if hasattr(o, 'site'):
-                    d['site'] = o.site
-                if hasattr(o, 'trusted'):
-                    d['trusted'] = o.trusted
-                l.append(d)
+                #ignore origin '/var/lib/dpkg/status'
+                if hasattr(o, 'archive') and o.archive != "now":
+                    d = dict()
+                    if hasattr(o, 'archive'):
+                        d['archive'] = o.archive
+                    if hasattr(o, 'codename'):
+                        d['codename'] = o.codename
+                    if hasattr(o, 'component'):
+                        d['component'] = o.component
+                    if hasattr(o, 'label'):
+                        d['label'] = o.label
+                    if hasattr(o, 'origin'):
+                        d['origin'] = o.origin
+                    if hasattr(o, 'site'):
+                        d['site'] = o.site
+                    if hasattr(o, 'trusted'):
+                        d['trusted'] = o.trusted
+                    l.append(d)
             return l
         #we can not handle this object type with the encoder
         raise Exception(
             "Can not encode '%s'. Not a 'list' object with origins" %
             (type(obj)))
 
-    def _package_version_dict(self, obj):
-        """convert a apt.package.Version to a dict"""
+    def _package_version_dict_full(self, obj):
+        """convert a apt.package.Version to a dict with full information"""
         if isinstance(obj, apt.package.Version):
             return {
                 'policy_priority': obj.policy_priority,
@@ -75,6 +77,7 @@ class AptCacheExport(object):
                 'section': obj.section,
                 'architecture': obj.architecture,
                 'uris': obj.uris,
+                'uri': obj.uri,
                 'summary': obj.summary,
                 'description': obj.description,
             }
@@ -83,10 +86,22 @@ class AptCacheExport(object):
             "Can not encode '%s'. Not a 'apt.package.Version' object" %
             (type(obj)))
 
-    def _package_version_list_list(self, obj):
+    def _package_version_dict_minimal(self, obj):
+        """convert a apt.package.Version to a dict with minimal information"""
+        if isinstance(obj, apt.package.Version):
+            return {
+                'version': obj.version,
+                'sha256': obj.sha256,
+            }
+        #we can not handle this object type with the encoder
+        raise Exception(
+            "Can not encode '%s'. Not a 'apt.package.Version' object" %
+            (type(obj)))
+
+    def _package_version_list_minimal(self, obj):
         """convert a apt.package.VersionList to a list of dicts"""
         if isinstance(obj, apt.package.VersionList):
-            return [self._package_version_dict(v) for v in obj]
+            return [self._package_version_dict_minimal(v) for v in obj]
         #we can not handle this object type with the encoder
         raise Exception(
             "Can not encode '%s'. Not a 'apt.package.VersionList' object" %
@@ -97,20 +112,27 @@ class AptCacheExport(object):
         if isinstance(obj, apt.package.Package):
             package = dict()
             package['fullname'] = obj.fullname
-            package['name'] = obj.name
-            package['shortname'] = obj.shortname
-            if hasattr(obj, "has_config_files"):
-                package['has_config_files'] = obj.has_config_files
-            package['is_installed'] = obj.is_installed
-            package['is_upgradable'] = obj.is_upgradable
+            #information about currently installed version
             if obj.installed:
-                package['installed'] = self._package_version_dict(
+                package['installed'] = self._package_version_dict_full(
                     obj.installed)
-            #package['installed_files'] = obj.installed_files
-            package['versions'] = self._package_version_list_list(obj.versions)
+            else:
+                package['installed'] = None
+            #other available versions (minimal info)
+            package['versions'] = self._package_version_list_minimal(
+                obj.versions)
+            #possible installation candidate (minimal info)
             if obj.candidate:
-                package['candidate'] = self._package_version_dict(
-                    obj.candidate)
+                #if there's no installed version, add full
+                #description of candidate
+                if package['installed']:
+                    package['candidate'] = self._package_version_dict_minimal(
+                        obj.candidate)
+                else:
+                    package['candidate'] = self._package_version_dict_full(
+                        obj.candidate)
+            else:
+                package['candidate'] = None
             return package
         raise Exception(
             "Can not encode '%s'. Not a 'apt.package.Package' object" %
