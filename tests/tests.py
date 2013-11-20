@@ -28,6 +28,7 @@ import json
 import StringIO
 import tempfile
 import shutil
+import subprocess
 
 
 class JsonExportTests(unittest.TestCase):
@@ -118,3 +119,24 @@ deb [arch=amd64] file://%(repo_path)s codename2 component1 component2
         #installation candidate
         self.assertFalse(p['candidate'] is None)
         self.assertEqual(p['candidate']['version'], '0.2-1')
+
+
+class ToolsTests(unittest.TestCase):
+
+    def setUp(self):
+        tools_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                 "../tools")
+        self.aptcacheexport_path = os.path.join(tools_dir, "aptcacheexport")
+        if not os.path.exists(self.aptcacheexport_path):
+            raise Exception("'%s' not found" % self.aptcacheexport_path)
+
+    def test_aptcacheexport_help(self):
+        """just run the help and check return value to be sure that there's no
+        syntax error"""
+        #if return code is != 0, check_output raises a CalledProcessError
+        subprocess.check_output([self.aptcacheexport_path, "-h"])
+        #now check with an invalid parameter and expect an exception
+        self.assertRaises(subprocess.CalledProcessError,
+                          subprocess.check_output,
+                          (self.aptcacheexport_path,
+                           "--invalid-parameter-foo-bar"))

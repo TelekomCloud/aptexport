@@ -32,6 +32,7 @@ setup(
         'python-apt',
         'setuptools',
         'nose',
+        'requests',
     ],
     test_suite='nose.collector',
     author="Thomas Bechtold",
