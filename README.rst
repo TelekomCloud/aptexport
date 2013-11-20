@@ -1,6 +1,6 @@
 aptexport python module
 =======================
-.. image:: https://travis-ci.org/TelekomCloud/aptexport.png
+.. image:: https://travis-ci.org/TelekomCloud/aptexport.png?branch=master
    :target: https://travis-ci.org/TelekomCloud/aptexport
 
 aptexport is a python modules based on `python-apt` to collect packages and export the package list. Currently only json is supported.
