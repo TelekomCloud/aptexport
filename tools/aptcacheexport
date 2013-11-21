@@ -21,17 +21,17 @@ from __future__ import print_function
 import argparse
 import sys
 import os
-import StringIO
 import requests
 import socket
+import json
 
 try:
-    from aptexport import AptCacheExport
+    from aptexport import PackageListApt
 except ImportError:
     #try to install from local directory
     sys.path.append(
         os.path.join(os.path.dirname(os.path.abspath(__file__)), "../"))
-    from aptexport import AptCacheExport
+    from aptexport import PackageListApt
 
 
 def process_args():
@@ -49,30 +49,47 @@ def process_args():
     return vars(parser.parse_args())
 
 
+class JSONExportApt(object):
+    def __init__(self, apt_cache_update, apt_only_installed, pretty_json):
+        self.__apt_cache_update = apt_cache_update
+        self.__apt_only_installed = apt_only_installed
+        self.__pretty_json = pretty_json
+
+    def export(self):
+        d = dict()
+        d["node"] = socket.getfqdn()
+        d["packages"] = list()
+        pla = PackageListApt(self.__apt_cache_update, self.__apt_cache_update)
+        for pkg in pla.package_list_apt(self.__apt_only_installed):
+            d["packages"].append(pkg)
+        if self.__pretty_json:
+                return json.dumps(d, indent=2)
+        else:
+                return json.dumps(d)
+
+
 if __name__ == '__main__':
     """main entry point"""
     args = process_args()
-    ace = AptCacheExport()
+    jea = JSONExportApt(False, args['only_installed'], args['pretty'])
     if args['output_file']:
         #write to file
         with open(args['output_file'], "w") as f:
-            ace.as_json(f, args['only_installed'], args['pretty'])
+            f.write(jea.export())
     elif args['server']:
         #send data via http post request to server
         uri = args['server'][0]
         #data
-        s = StringIO.StringIO()
-        ace.as_json(s, args['only_installed'], args['pretty'])
-        s.seek(0)
-        payload = {'fqdn': socket.getfqdn(), 'data': s.getvalue()}
+        s = jea.export()
         headers = {'content-type': 'application/json'}
         #send and check return status code
-        r = requests.post(uri, data=payload, headers=headers)
+        r = requests.post(uri, data=s, headers=headers)
         if r.status_code != requests.codes.ok:
             print(r.text)
             sys.exit(-1)
     else:
         #write to console
-        ace.as_json(sys.stdout, args['only_installed'], args['pretty'])
+        s = jea.export()
+        print(s)
 
     sys.exit(0)

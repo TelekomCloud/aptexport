@@ -21,17 +21,16 @@ import sys
 #use aptexport module from local dir
 sys.path.append(
     os.path.join(os.path.dirname(os.path.abspath(__file__)), "../"))
-from aptexport import AptCacheExport
+from aptexport import PackageListApt
 
 import unittest
-import json
-import StringIO
 import tempfile
 import shutil
 import subprocess
 
 
-class JsonExportTests(unittest.TestCase):
+class BaseTests(unittest.TestCase):
+    """basic test class"""
     def __setup_apt_directory_tree(self):
         """setup directory structure for apt"""
         os.makedirs(os.path.abspath(self.rootdir + "/etc/apt"))
@@ -53,72 +52,47 @@ deb [arch=amd64] file://%(repo_path)s codename2 component1 component2
             s.write("")
 
     def setUp(self):
+        """run before every testcase"""
         self.rootdir = tempfile.mkdtemp(prefix='aptexport-tests_')
         self.__setup_apt_directory_tree()
-        self.ace = AptCacheExport(rootdir=self.rootdir, cache_update=True)
-        #stringIO used to write json
-        self.f = StringIO.StringIO()
+        self.pla = PackageListApt(rootdir=self.rootdir, cache_update=True)
 
     def tearDown(self):
+        """run after every testcase"""
         if self.rootdir:
             if self.rootdir.startswith("/tmp"):
                 shutil.rmtree(self.rootdir)
             else:
                 sys.stdout.write(
                     "don't delete temp dir '%s' for safety" % (self.rootdir))
-        self.f.close()
 
-    def test_export_import(self):
-        """write json to file and reread the file and load into json"""
-        #first dump the cache as json to file
-        self.ace.as_json(self.f, False, True)
-        #now load json output from file
-        self.f.seek(0)
-        json.loads("".join(self.f.readlines()))
 
-    def test_only_installed_packages(self):
-        """test expects that the testpackages
-        'aptexport-unittest-dummy1-bin1' and
-        'aptexport-unittest-dummy1-bin2' are not installed"""
-        #check only installed packages
-        self.ace.as_json(self.f, True, True)
-        self.f.seek(0)
-        jsondata = json.loads("".join(self.f.readlines()))
-        #expect 0 packages installed!
-        self.assertEqual(len(jsondata), 0)
+class PackageTests(BaseTests):
+    def test_package_keys(self):
+        """test that the requested keys are available for every package"""
+        for p in self.pla.package_list_apt(False):
+            expected_keys = set(["name", "uri", "version", "summary", "sha256",
+                                 "provider", "architecture"])
+            available_keys = set(p.keys())
+            self.assertEqual(
+                len(available_keys.symmetric_difference(expected_keys)), 0)
 
-    def test_all_packages(self):
-        """test if packages from repositories are listed"""
-        #check all packages (not only installed)
-        self.ace.as_json(self.f, False, True)
-        self.f.seek(0)
-        jsondata = json.loads("".join(self.f.readlines()))
-        #expect 2 packages available
-        self.assertEqual(len(jsondata), 2,
-                         "2 packages expected in the test repository")
 
-    def test_aptexport_dummy_package(self):
-        """test a single package and the available fields"""
-        #check all packages (not only installed)
-        self.ace.as_json(self.f, False, True)
-        self.f.seek(0)
-        jsondata = json.loads("\n".join(self.f.readlines()))
-        #first package should be 'aptexport-unittest-dummy1-bin1:amd64'
-        p = jsondata[0]
-        self.assertEqual(p['fullname'], 'aptexport-unittest-dummy1-bin1:amd64')
-        self.assertEqual(p['installed'], None)
-        #not all versions of python-apt have this key
-        if hasattr(p, "has_config_files"):
-            self.assertEqual(p['has_config_files'], False)
-        #expected 2 versions for this package
-        self.assertEqual(len(p['versions']), 2)
-        self.assertEqual(p['versions'][0]['version'], '0.2-1')
-        self.assertEqual(p['versions'][1]['version'], '0.1-1')
-        #check some fields of one of the versions
-        self.assertIsNot(p['versions'][0]['sha256'], None or "")
-        #installation candidate
-        self.assertFalse(p['candidate'] is None)
-        self.assertEqual(p['candidate']['version'], '0.2-1')
+class PackageListTests(BaseTests):
+    def test_package_dummies_in_all(self):
+        """test that the 2 package dummies are available in all package list"""
+        name_list_all = map(lambda x: x["name"],
+                            self.pla.package_list_apt(False))
+        self.assertIn("aptexport-unittest-dummy1-bin1", name_list_all)
+        self.assertIn("aptexport-unittest-dummy1-bin2", name_list_all)
+
+    def test_package_dummies_in_installed(self):
+        """test that the 2 package dummies are not available in installed
+        package list"""
+        name_list_installed = map(lambda x: x["name"],
+                                  self.pla.package_list_apt(True))
+        self.assertNotIn("aptexport-unittest-dummy1-bin1", name_list_installed)
+        self.assertNotIn("aptexport-unittest-dummy1-bin2", name_list_installed)
 
 
 class ToolsTests(unittest.TestCase):

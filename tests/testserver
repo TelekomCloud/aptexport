@@ -18,7 +18,6 @@ from __future__ import print_function
 
 import BaseHTTPServer
 import socket
-import urlparse
 import json
 
 
@@ -30,11 +29,9 @@ class PostRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         content_length = int(self.headers['Content-Length'])
         data_raw = self.rfile.read(content_length)
         print("data received ({0}, {0})".format(content_length, len(data_raw)))
-        #get key/values from post data
-        data_dict = urlparse.parse_qs(data_raw)
-        print("fqdn: {0}".format(data_dict['fqdn'][0]))
-        j = json.loads(data_dict['data'][0])
-        print("json decoded ({0})".format(len(j)))
+        #parse the received json data
+        json.loads(data_raw)
+        print("json decoded")
         self.send_response(200)
         self.send_header('Content-type', 'text/plain')
         self.end_headers()
