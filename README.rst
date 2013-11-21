@@ -15,6 +15,43 @@ There's a command line tool called `aptcacheexport`. To see a installed packages
 
   ./aptcacheexport --only-installed --pretty
 
+Exported format
+===============
+The exported format looks like::
+
+   {
+     "node":     "<nodename>",
+     "packages": [
+     {
+     "name":         "<packagename>",
+     "uri":          "<uri>",
+     "version":      "<version>",
+     "summary":      "<summary>",
+     "sha256":       "<sha256>",
+     "provider":     "[apt|pip|gem|...]",
+     "architecture": "<i386|amd64>",
+     ]
+     }
+   }
+
+Here's an example of the exported format::
+
+  {
+    "node": "localhost.localdomain",
+    "packages": [
+    {
+      "name": "accountsservice",
+      "uri": "http://us.archive.ubuntu.com/ubuntu/pool/main/a/accountsservice/accountsservice_0.6.15-2ubuntu9_amd64.deb",
+      "summary": "query and manipulate user account information",
+      "version": "0.6.15-2ubuntu9",
+      "architecture": "amd64",
+      "sha256": "5d8e40ce35ea30f621573d40b17dcd21e3b974f2dd5e096c6c10701af8cdc5d0",
+      "provider": "apt",
+      },
+      ...
+      ]
+  }
+
 Tests
 =====
 To execute the whole testsuite (including pep8 and flake8), do::

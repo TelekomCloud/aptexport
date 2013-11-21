@@ -17,12 +17,41 @@
 from __future__ import print_function
 
 import apt
-#import apt_pkg
-import json
 
 
-class AptCacheExport(object):
-    """handle the availalbe/installed software packages"""
+class Package(object):
+    def __init__(self, pkg):
+        #handle only packages of type 'apt.package.Package'
+        if not isinstance(pkg, apt.package.Package):
+            raise Exception("pkg type not 'apt.package.Package'")
+        self.__pkg = pkg
+        #get the version to get information from
+        if hasattr(self.__pkg, "installed") and self.__pkg.installed:
+            self.__pkg_version = pkg.installed
+        elif hasattr(self.__pkg, "candidate") and self.__pkg.candidate:
+            self.__pkg_version = pkg.candidate
+        else:
+            raise Exception("Can not get a version for pkg '{0}'".format(
+                pkg.fullname))
+
+    def __repr__(self):
+        return "<%(name)s, %(version)s>" % self.as_dict()
+
+    def as_dict(self):
+        """get package information as dict"""
+        p = dict()
+        p["name"] = self.__pkg.name
+        p["uri"] = self.__pkg_version.uri
+        p["version"] = self.__pkg_version.version
+        p["summary"] = self.__pkg_version.summary
+        p["sha256"] = self.__pkg_version.sha256
+        p["provider"] = "apt"
+        p["architecture"] = self.__pkg_version.architecture
+        return p
+
+
+class PackageListApt(object):
+    """create list with all/only installed deb packages"""
     def __init__(self, rootdir="/", cache_update=False):
         self.__cache_update = cache_update
         self.__cache = apt.Cache(rootdir=rootdir, memonly=False)
@@ -31,129 +60,9 @@ class AptCacheExport(object):
             self.__cache.update()
         self.__cache.open()
 
-    def _package_version_origins_dict(self, obj):
-        """convert a list of origins to a dict"""
-        if isinstance(obj, list):
-            l = list()
-            for o in obj:
-                #ignore origin '/var/lib/dpkg/status'
-                if hasattr(o, 'archive') and o.archive != "now":
-                    d = dict()
-                    if hasattr(o, 'archive'):
-                        d['archive'] = o.archive
-                    if hasattr(o, 'codename'):
-                        d['codename'] = o.codename
-                    if hasattr(o, 'component'):
-                        d['component'] = o.component
-                    if hasattr(o, 'label'):
-                        d['label'] = o.label
-                    if hasattr(o, 'origin'):
-                        d['origin'] = o.origin
-                    if hasattr(o, 'site'):
-                        d['site'] = o.site
-                    if hasattr(o, 'trusted'):
-                        d['trusted'] = o.trusted
-                    l.append(d)
-            return l
-        #we can not handle this object type with the encoder
-        raise Exception(
-            "Can not encode '%s'. Not a 'list' object with origins" %
-            (type(obj)))
-
-    def _package_version_dict_full(self, obj):
-        """convert a apt.package.Version to a dict with full information"""
-        if isinstance(obj, apt.package.Version):
-            return {
-                'policy_priority': obj.policy_priority,
-                'version': obj.version,
-                'installed_size': obj.installed_size,
-                'uri': obj.uri,
-                'sha256': obj.sha256,
-                'size': obj.size,
-                'installed_size': obj.installed_size,
-                'source_name': obj.source_name,
-                'source_version': obj.source_version,
-                'origins': self._package_version_origins_dict(obj.origins),
-                'section': obj.section,
-                'architecture': obj.architecture,
-                'uris': obj.uris,
-                'uri': obj.uri,
-                'summary': obj.summary,
-                'description': obj.description,
-            }
-        #we can not handle this object type with the encoder
-        raise Exception(
-            "Can not encode '%s'. Not a 'apt.package.Version' object" %
-            (type(obj)))
-
-    def _package_version_dict_minimal(self, obj):
-        """convert a apt.package.Version to a dict with minimal information"""
-        if isinstance(obj, apt.package.Version):
-            return {
-                'version': obj.version,
-                'sha256': obj.sha256,
-            }
-        #we can not handle this object type with the encoder
-        raise Exception(
-            "Can not encode '%s'. Not a 'apt.package.Version' object" %
-            (type(obj)))
-
-    def _package_version_list_minimal(self, obj):
-        """convert a apt.package.VersionList to a list of dicts"""
-        if isinstance(obj, apt.package.VersionList):
-            return [self._package_version_dict_minimal(v) for v in obj]
-        #we can not handle this object type with the encoder
-        raise Exception(
-            "Can not encode '%s'. Not a 'apt.package.VersionList' object" %
-            (type(obj)))
-
-    def _package_dict(self, obj):
-        """convert a apt.package.Package object to a dict"""
-        if isinstance(obj, apt.package.Package):
-            package = dict()
-            package['fullname'] = obj.fullname
-            #information about currently installed version
-            if obj.installed:
-                package['installed'] = self._package_version_dict_full(
-                    obj.installed)
-            else:
-                package['installed'] = None
-            #other available versions (minimal info)
-            package['versions'] = self._package_version_list_minimal(
-                obj.versions)
-            #possible installation candidate (minimal info)
-            if obj.candidate:
-                #if there's no installed version, add full
-                #description of candidate
-                if package['installed']:
-                    package['candidate'] = self._package_version_dict_minimal(
-                        obj.candidate)
-                else:
-                    package['candidate'] = self._package_version_dict_full(
-                        obj.candidate)
-            else:
-                package['candidate'] = None
-            return package
-        raise Exception(
-            "Can not encode '%s'. Not a 'apt.package.Package' object" %
-            (type(obj)))
-
-    def _get_packages(self, only_installed):
+    def package_list_apt(self, only_installed):
         """iterate over the packages"""
         for pkg in self.__cache:
             if only_installed and not pkg.is_installed:
                 continue
-            yield self._package_dict(pkg)
-
-    def as_json(self, out, only_installed, pretty):
-        """write to a file-like object"""
-        out.write('[\n')
-        if pretty:
-            out.write(",".join(map(lambda x: json.dumps(x, indent=2),
-                                   self._get_packages(
-                                       only_installed=only_installed))))
-        else:
-            out.write(",".join(map(lambda x: json.dumps(x),
-                                   self._get_packages(
-                                       only_installed=only_installed))))
-        out.write(']\n')
+            yield (Package(pkg).as_dict())
