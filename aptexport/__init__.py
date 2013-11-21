@@ -30,6 +30,9 @@ class Package(object):
             self.__pkg_version = pkg.installed
         elif hasattr(self.__pkg, "candidate") and self.__pkg.candidate:
             self.__pkg_version = pkg.candidate
+        elif hasattr(self.__pkg, "versions") and self.__pkg.versions and \
+                len(self.__pkg.versions) > 0:
+            self.__pkg_version = self.__pkg.versions[0]
         else:
             raise Exception("Can not get a version for pkg '{0}'".format(
                 pkg.fullname))
