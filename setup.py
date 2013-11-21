@@ -36,7 +36,7 @@ setup(
     ],
     test_suite='nose.collector',
     author="Thomas Bechtold",
-    author_email="thomasbechtold@jpberlin.de",
+    author_email="t.bechtold@telekom.de",
     description="export apt package catalog",
     long_description=long_desc,
     license="Apache-2.0",
