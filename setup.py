@@ -34,6 +34,7 @@ setup(
         'nose',
         'requests',
     ],
+    py_modules=['aptexport'],
     test_suite='nose.collector',
     author="Thomas Bechtold",
     author_email="t.bechtold@telekom.de",
