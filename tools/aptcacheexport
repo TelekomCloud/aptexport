@@ -21,6 +21,9 @@ from __future__ import print_function
 import argparse
 import sys
 import os
+import StringIO
+import requests
+import socket
 
 try:
     from aptexport import AptCacheExport
@@ -35,6 +38,8 @@ def process_args():
     """process arguments"""
     parser = argparse.ArgumentParser(prog='repository-software')
     parser.add_argument('-o', '--output-file', help='output file')
+    parser.add_argument('-s', '--server', nargs=1, metavar=('URI'),
+                        help='server to send data')
     parser.add_argument('-i', '--only-installed', action='store_true',
                         help='output only installed packages" \
                         "(default: %(default)s)')
@@ -52,6 +57,20 @@ if __name__ == '__main__':
         #write to file
         with open(args['output_file'], "w") as f:
             ace.as_json(f, args['only_installed'], args['pretty'])
+    elif args['server']:
+        #send data via http post request to server
+        uri = args['server'][0]
+        #data
+        s = StringIO.StringIO()
+        ace.as_json(s, args['only_installed'], args['pretty'])
+        s.seek(0)
+        payload = {'fqdn': socket.getfqdn(), 'data': s.getvalue()}
+        headers = {'content-type': 'application/json'}
+        #send and check return status code
+        r = requests.post(uri, data=payload, headers=headers)
+        if r.status_code != requests.codes.ok:
+            print(r.text)
+            sys.exit(-1)
     else:
         #write to console
         ace.as_json(sys.stdout, args['only_installed'], args['pretty'])

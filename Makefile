@@ -2,7 +2,7 @@
 
 all: pep8 flake8 tests
 
-FILE_LIST:=$(shell find . -path ./build -prune -o -name '*.py' -print) tools/aptcacheexport
+FILE_LIST:=$(shell find . -path ./build -prune -o -name '*.py' -print) tools/aptcacheexport tests/testserver
 
 pep8:
 	pep8 $(FILE_LIST)

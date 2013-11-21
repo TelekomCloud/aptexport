@@ -4,7 +4,7 @@ python:
 virtualenv:
   system_site_packages: true
 before_install:
-  - "sudo apt-get install -qq pep8 python-apt python3-apt"
-  - "pip install flake8 nose"
+  - "sudo apt-get install -qq pep8 python-apt python3-apt python-requests"
+  - "pip install flake8 nose requests"
 # command to run tests
 script: make
