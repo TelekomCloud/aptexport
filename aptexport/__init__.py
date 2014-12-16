@@ -17,7 +17,7 @@
 from __future__ import print_function
 
 import apt
-
+import hashlib
 
 class Package(object):
     def __init__(self, pkg):
@@ -48,6 +48,9 @@ class Package(object):
         p["version"] = self.__pkg_version.version
         p["summary"] = self.__pkg_version.summary
         p["sha256"] = self.__pkg_version.sha256
+        # fake a checksum value, since we can't find a real one
+        if p["sha256"] is None:
+            p["sha256"] = hashlib.sha256( p["name"] + "-" + p["version"] ).hexdigest()
         p["provider"] = "apt"
         p["architecture"] = self.__pkg_version.architecture
         return p
