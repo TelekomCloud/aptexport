@@ -22,7 +22,7 @@ with open(os.path.join(os.path.dirname(__file__), "README.rst"), "r") as f:
 
 setup(
     name="aptexport",
-    version="0.1",
+    version="0.1.1",
     packages=find_packages(),
     scripts=['tools/aptcacheexport'],
     package_data={
