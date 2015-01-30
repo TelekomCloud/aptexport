@@ -1,3 +1,10 @@
+Mothballed
+==========
+
+This project is currently unmaintained. The core developers have moved to other projects. The system works very well and has a solid core.
+
+If the status changes, please update this section.
+
 aptexport python module
 =======================
 .. image:: https://travis-ci.org/TelekomCloud/aptexport.png?branch=master
